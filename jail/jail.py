@@ -34,6 +34,12 @@ class JailCog(commands.Cog):
         - `[p]jail <user>`
         - `[p]jail <user> <time in minutes>`
         """
+        # TODO Generate a 4 character string for uniqueness
+        # TODO Create a channel inside the category channel
+        # TODO Create a role with the 4 char string
+        # TODO Add special config to role
+        # TODO Apply role to user
+        # TODO Create record in settings[history] with the 4 chars
         pass
 
     @commands.group("jails")
@@ -99,4 +105,9 @@ class JailCog(commands.Cog):
         Example:
         - `[p]bail <user>`
         """
+        # TODO Get the unique code from user's role
+        # TODO Remove role from user
+        # TODO Delete generated role
+        # TODO Delete generated channel for user
+        # TODO Log in settings[history] of deletion
         pass
