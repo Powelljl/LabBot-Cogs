@@ -18,6 +18,30 @@ class JailCog(commands.Cog):
 
         self.settings.register_guild(**default_guild_settings)
 
+    @commands.Cog.listener()
+    async def on_message(self, message: discord.Message):
+        if not isinstance(message.guild, discord.Guild):
+            # The user has DM'd us. Ignore.
+            return
+
+        # TODO Check if message is in jail channel
+        # TOOD If yes, add to settings[history]
+        pass
+
+    @commands.Cog.listener()
+    async def on_message_edit(
+        self,
+        before: discord.Message,
+        after: discord.Message
+    ):
+        if not isinstance(before.guild, discord.Guild):
+            # The user has DM'd us. Ignore.
+            return
+
+        # TODO Check if message is in jail channel
+        # TOOD If yes, add change to settings[history]
+        pass
+
     @commands.command(name="jail")
     @commands.guild_only()
     @checks.mod()
