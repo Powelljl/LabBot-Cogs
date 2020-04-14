@@ -25,7 +25,7 @@ class JailCog(commands.Cog):
             return
 
         # TODO Check if message is in jail channel
-        # TOOD If yes, add to settings[history]
+        # TODO If yes, add to settings[history]
         pass
 
     @commands.Cog.listener()
@@ -39,7 +39,7 @@ class JailCog(commands.Cog):
             return
 
         # TODO Check if message is in jail channel
-        # TOOD If yes, add change to settings[history]
+        # TODO If yes, add change to settings[history]
         pass
 
     @commands.command(name="jail")
