@@ -13,6 +13,11 @@ def randomword(length):
 class JailCog(commands.Cog):
     """Jail Cog"""
 
+    CREATED = "created"
+    NEW_MSG = "new"
+    EDIT_MSG = "edit"
+    CLOSED = "closed"
+
     def __init__(self, bot):
         self.bot = bot
         self.settings = Config.get_conf(self, identifier=1249812384)
@@ -80,12 +85,29 @@ class JailCog(commands.Cog):
             return
 
         # TODO Create a channel inside the category channel
-
         # TODO Create a role with the 4 char string
         # TODO Add special config to role
         # TODO Apply role to user
         # TODO Create record in settings[history] with the 4 chars
-        pass
+        self.add_history(
+            uuid=uuid,
+            action=self.CREATED,
+            user=user
+        )
+
+    async def add_history(
+        self,
+        uuid: str,
+        action: str,
+        user: discord.Member,
+        details
+    ):
+        async with await self.settings.guild(user.guild).history() as li:
+            li.append({
+                "uuid": uuid,
+                "action": action,
+                "user": user.id
+            })
 
     @commands.group("jails")
     @checks.mod()
