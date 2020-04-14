@@ -86,17 +86,31 @@ class JailCog(commands.Cog):
 
         # TODO Create a role with the 4 char string
         jail_name = f"jail-{uuid}"
-        permission = discord.Permissions.none()
-        permission.update(read_messages=False, send_messages=False)
-        await ctx.guild.create_role(
+        permission = discord.Permissions(
+            read_messages=False
+        )
+        new_role = await ctx.guild.create_role(
             name=jail_name,
             permissions=permission,
             reason="Auto-generated jail role."
         )
 
         # TODO Create a channel inside the category channel
-        # TODO Add special config to role
+        permission_overwrite = discord.PermissionOverwrite(
+            read_messages=True,
+            send_messages=True
+        )
+        await jail_area.create_text_channel(
+            name=jail_name,
+            overwrites={
+                new_role: permission_overwrite
+            },
+            reason="Auto-generated jail channel."
+        )
+
         # TODO Apply role to user
+        await user.add_roles(new_role)
+
         # TODO Create record in settings[history] with the 4 chars
         self.add_history(
             uuid=uuid,
