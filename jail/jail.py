@@ -84,8 +84,17 @@ class JailCog(commands.Cog):
             ctx.send("Configured jail could not be found.")
             return
 
-        # TODO Create a channel inside the category channel
         # TODO Create a role with the 4 char string
+        jail_name = f"jail-{uuid}"
+        permission = discord.Permissions.none()
+        permission.update(read_messages=False, send_messages=False)
+        await ctx.guild.create_role(
+            name=jail_name,
+            permissions=permission,
+            reason="Auto-generated jail role."
+        )
+
+        # TODO Create a channel inside the category channel
         # TODO Add special config to role
         # TODO Apply role to user
         # TODO Create record in settings[history] with the 4 chars
