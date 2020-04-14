@@ -1,6 +1,13 @@
 """discord red-bot jail"""
 from redbot.core import commands, Config, checks
 import discord
+import random
+import string
+
+
+def randomword(length):
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(length))
 
 
 class JailCog(commands.Cog):
@@ -59,7 +66,21 @@ class JailCog(commands.Cog):
         - `[p]jail <user> <time in minutes>`
         """
         # TODO Generate a 4 character string for uniqueness
+        uuid = randomword(4)
+
+        # TODO Get category channel object
+        jail_area_id = await self.settings.guild(ctx.guild).jail()
+        if jail_area_id is None:
+            ctx.send("Jail is not configured.")
+            return
+
+        jail_area = ctx.guild.get_channel(jail_area_id)
+        if jail_area is None:
+            ctx.send("Configured jail could not be found.")
+            return
+
         # TODO Create a channel inside the category channel
+
         # TODO Create a role with the 4 char string
         # TODO Add special config to role
         # TODO Apply role to user
