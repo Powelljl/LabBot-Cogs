@@ -100,32 +100,43 @@ class JailCog(commands.Cog):
             read_messages=True,
             send_messages=True
         )
-        await jail_area.create_text_channel(
-            name=jail_name,
-            overwrites={
-                new_role: permission_overwrite
-            },
-            reason="Auto-generated jail channel."
-        )
+        try:
+            await jail_area.create_text_channel(
+                name=jail_name,
+                overwrites={
+                    new_role: permission_overwrite,
+                    ctx.guild.default_role: discord.PermissionOverwrite(
+                        read_messages=False,
+                        send_messages=False
+                    )
+                },
+                reason="Auto-generated jail channel."
+            )
+        except discord.Forbidden:
+            await ctx.send("Incorrect permissions to create a jail.")
+            return
 
         # TODO Apply role to user
         await user.add_roles(new_role)
 
         # TODO Create record in settings[history] with the 4 chars
-        self.add_history(
+        await self.add_history(
             uuid=uuid,
             action=self.CREATED,
             user=user
         )
+
+        await ctx.send("User has been jailed.")
 
     async def add_history(
         self,
         uuid: str,
         action: str,
         user: discord.Member,
-        details
+        *,
+        details=None
     ):
-        async with await self.settings.guild(user.guild).history() as li:
+        async with self.settings.guild(user.guild).history() as li:
             li.append({
                 "uuid": uuid,
                 "action": action,
